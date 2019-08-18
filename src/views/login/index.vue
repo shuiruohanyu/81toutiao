@@ -64,7 +64,16 @@ export default {
   methods: {
     login () {
       this.$refs.myForm.validate((isOK, params) => {
-        console.log(params)
+        this.$axios({
+          method: 'post',
+          url: 'authorizations',
+          data: this.formData
+        }).then(result => {
+          window.localStorage.setItem('user-info', JSON.stringify(result.data.data))
+          this.$router.push('/home')
+        }).catch(() => {
+          this.$message({ message: '登录失败', type: 'warning' })
+        })
       })
     }
   }
